@@ -1,0 +1,62 @@
+osmgeocode.py
+=============
+
+Very very basic geocoding for OpenStreetMap.org (OSM) data. Makes reasonable guesses at misspellings and partial names.
+
+osm.py comes from Graphserver: http://github.com/bmander/graphserver/tree/master
+and is copyright (c) 2007, Brandon Martin-Anderson under the BSD License
+
+Spell correction logic from Peter Norvig: http://norvig.com/spell-correct.html
+
+
+
+Usage
+=====
+
+OSM data can be a full map, a published extract map or just data exported from a tool like JOSM (http://josm.openstreetmap.de/).
+
+
+>>> from osmgeocode import Geocoder
+>>> from osm import OSM
+>>> coder = Geocoder(OSM('sample.osm'))
+>>> coder.resolve('maypark village')
+('maypark village', <osm.Way instance at 0x66c1c0>)
+>>> (placename, way) = coder.resolve('maypark village')
+>>> way.get_projected_points()[0]
+(-7.0748686999999997, 52.253002199999997)
+
+
+You can also experiment from the command line:
+$ ./osmgeocode.py mayprak villag
+Maypark Village: (-7.0748686999999997, 52.253002199999997)
+
+$ ./osmgeocode.py couse brid
+Couse Bridge Roundabout: (-7.1151502000000004, 52.228008299999999)
+
+$ ./osmgeocode.py tir conell ave
+Tir Connell Avenue: (-7.1442591000000002, 52.250328699999997)
+
+
+
+Bugs
+====
+
+Sometimes the combination of spelling correction and best partial match can be a little overeager.
+
+$ ./osmgeocode.py sexy perry winkles
+Six Crossroads Business Park: (-7.1448654999999999, 52.2331012)
+
+Note: if a shop selling attractive sea food opens at the Six Crossroads Business Park, this will no longer be considered a defect.
+
+
+
+License
+=======
+
+osm.py is under a BSD license
+
+sample.osm is OpenStreetMap.org data from Waterford, Ireland and is licensed under Creative Commons
+
+osmgeocode.py is free for any use you might find, there is no warranty, use at your own risk.
+
+Written by Brian White, http://dogg.ie for contact info.
